@@ -1,4 +1,3 @@
-
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import usersSlice from "../features/users/usersSlice";
 import loginSlice from "../features/login/loginSlice";

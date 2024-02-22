@@ -90,6 +90,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         onChangeText={(text) => setEmail(text)}
         autoCapitalize="none"
         autoCorrect={false}
+        keyboardType="email-address"
         value={email}
       />
       {errors.email && <View style={styles.error}><Text style={styles.textError}>{errors.email}</Text></View>}

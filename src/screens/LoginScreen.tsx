@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginUser } from '../features/login/loginSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type LoginScreenProps = {
@@ -16,7 +17,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('')
   const [errors, setErrors] = useState<any>({});
-  const [errorLogin, setErrorLogin]= useState('');
+  const [errorLogin, setErrorLogin] = useState('');
   const emailInput = useRef<TextInput>(null);
 
   const handleLogin = () => {
@@ -36,7 +37,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     if (hasErrors) {
       setErrors(newErrors);
       setErrorLogin('');
-      
+
       return;
     } else {
       const validation: any = userList.find(user => user.email === email && user.password === password)
@@ -53,15 +54,31 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         setEmail('');
         setErrors({});
         setErrorLogin('');
-        
+
         emailInput.current?.focus();
         navigation.navigate('App');
-      } else{
+      } else {
         setErrors({});
         setErrorLogin('Email or Password incorrect!');
       }
     }
   };
+
+  useEffect(() => {
+    const getLoginData = async () => {
+      let user: any = await AsyncStorage.getItem('login');
+      user = JSON.parse(user);
+
+      if (user !== null) {
+        if (user.isLoggedIn && user.username !== null && user.email !== null) {
+          dispatch(loginUser(user));
+          navigation.navigate('App');
+        }
+      }
+
+    };
+    getLoginData()
+  }, [])
 
   return (
     <View style={styles.container}>

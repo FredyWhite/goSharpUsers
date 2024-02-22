@@ -43,7 +43,7 @@ const CreateUserScreen: React.FC<CreateUserScreenProps> = ({ navigation }) => {
     if (hasErrors) {
       setErrors(newErrors);
       setErrorCreate('');
-      
+
       return;
     } else {
       const validation: any = userList.find(user => user.email === email);
@@ -58,6 +58,7 @@ const CreateUserScreen: React.FC<CreateUserScreenProps> = ({ navigation }) => {
         setErrorCreate('');
 
         nameInput.current?.focus();
+       /*  getRomoveLoginData(); */
         navigation.navigate('UserList');
       } else {
         setErrors({});

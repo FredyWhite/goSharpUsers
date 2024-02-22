@@ -65,7 +65,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("loginData => ", loginData, typeof loginData)
     if (loginData.isLoggedIn && loginData.username !== null && loginData.email !== null) {
       navigation.navigate('App');
     }

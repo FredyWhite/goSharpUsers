@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+/* import AsyncStorage from "@react-native-async-storage/async-storage"; */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserState {
@@ -13,14 +13,6 @@ export const initialState: UserState = {
   email: null,
 };
 
-const setLoginData = (action: PayloadAction<UserState> | undefined) => {
-  AsyncStorage.setItem('login', JSON.stringify({
-    isLoggedIn: action ? action.payload.isLoggedIn : false,
-    username: action ? action.payload.email : null,
-    email: action ? action.payload.username : null,
-  }))
-}
-
 const loginSlice = createSlice({
   name: "login",
   initialState,
@@ -29,13 +21,11 @@ const loginSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn
       state.email = action.payload.email
       state.username = action.payload.username
-      setLoginData(action)
     },
     loginOut: (state) => {
       state.isLoggedIn = false
       state.email = null
       state.username = null
-      setLoginData(undefined)
     }
 
   }

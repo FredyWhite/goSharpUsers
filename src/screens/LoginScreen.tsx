@@ -4,7 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginUser } from '../features/login/loginSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type LoginScreenProps = {
@@ -13,6 +12,7 @@ type LoginScreenProps = {
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const userList = useAppSelector(state => state.users.objUsers);
+  const loginData = useAppSelector(state => state.login)
   const dispatch = useAppDispatch();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('')
@@ -65,19 +65,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const getLoginData = async () => {
-      let user: any = await AsyncStorage.getItem('login');
-      user = JSON.parse(user);
-
-      if (user !== null) {
-        if (user.isLoggedIn && user.username !== null && user.email !== null) {
-          dispatch(loginUser(user));
-          navigation.navigate('App');
-        }
-      }
-
-    };
-    getLoginData()
+    console.log("loginData => ", loginData, typeof loginData)
+    if (loginData.isLoggedIn && loginData.username !== null && loginData.email !== null) {
+      navigation.navigate('App');
+    }
   }, [])
 
   return (
